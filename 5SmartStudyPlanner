@@ -1,0 +1,292 @@
+npm install redux react-redux @reduxjs/toolkit
+2️⃣ store.js
+import { createStore, applyMiddleware } from "redux";
+import { studyReducer } from "./reducers/studyReducer";
+import logger from "./middleware/logger";
+
+const store = createStore(studyReducer, applyMiddleware(logger));
+
+export default store;
+3️⃣ actions/studyActions.js
+export const addStudy = (text) => {
+  return {
+    type: "ADD_STUDY",
+    payload: text,
+  };
+};
+
+export const deleteStudy = (id) => {
+  return {
+    type: "DELETE_STUDY",
+    payload: id,
+  };
+};
+
+export const toggleStudy = (id) => {
+  return {
+    type: "TOGGLE_STUDY",
+    payload: id,
+  };
+};
+4️⃣ reducers/studyReducer.js
+const initialState = {
+  studies: [],
+};
+
+export const studyReducer = (state = initialState, action) => {
+  switch (action.type) {
+
+    case "ADD_STUDY":
+      return {
+        ...state,
+        studies: [
+          ...state.studies,
+          { id: Date.now(), text: action.payload, completed: false },
+        ],
+      };
+
+    case "DELETE_STUDY":
+      return {
+        ...state,
+        studies: state.studies.filter(study => study.id !== action.payload),
+      };
+
+    case "TOGGLE_STUDY":
+      return {
+        ...state,
+        studies: state.studies.map(study =>
+          study.id === action.payload
+            ? { ...study, completed: !study.completed }
+            : study
+        ),
+      };
+
+    default:
+      return state;
+  }
+};
+5️⃣ middleware/logger.js
+const logger = store => next => action => {
+  console.log("Dispatching:", action);
+  let result = next(action);
+  console.log("Next State:", store.getState());
+  return result;
+};
+
+export default logger;
+6️⃣ main.jsx (index.js in Vite)
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import App from "./App";
+import store from "./assets/5SmartStudyPlanner/store";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+7️⃣ components/AddStudy.jsx
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addStudy } from "../actions/studyActions";
+
+function AddStudy() {
+
+  const [text, setText] = useState("");
+  const dispatch = useDispatch();
+
+  const handleAdd = () => {
+    if (text.trim() === "") return;
+
+    dispatch(addStudy(text));
+    setText("");
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        gap: "10px",
+        marginBottom: "25px"
+      }}
+    >
+
+      <input
+        type="text"
+        placeholder="Enter study topic..."
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        style={{
+          flex: 1,
+          padding: "12px",
+          borderRadius: "8px",
+          border: "1px solid #ccc",
+          fontSize: "16px"
+        }}
+      />
+
+      <button
+        onClick={handleAdd}
+        style={{
+          padding: "12px 20px",
+          borderRadius: "8px",
+          border: "none",
+          backgroundColor: "#4CAF50",
+          color: "white",
+          fontWeight: "bold",
+          cursor: "pointer"
+        }}
+      >
+        Add
+      </button>
+
+    </div>
+  );
+}
+
+export default AddStudy;
+8️⃣ components/StudyList.jsx
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteStudy, toggleStudy } from "../actions/studyActions";
+
+function StudyList() {
+
+  const studies = useSelector((state) => state.studies);
+  const dispatch = useDispatch();
+
+  return (
+
+    <div
+      style={{
+        maxWidth: "600px",
+        margin: "30px auto",
+        padding: "20px",
+        background: "#ffffff",
+        borderRadius: "12px",
+        boxShadow: "0 4px 10px rgba(0,0,0,0.1)"
+      }}
+    >
+
+      <h2 style={{ textAlign: "center" }}>
+        Study Planner
+      </h2>
+
+      {studies.length === 0 ? (
+
+        <p style={{ textAlign: "center" }}>
+          No study tasks
+        </p>
+
+      ) : (
+
+        studies.map((study) => (
+
+          <div
+            key={study.id}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "10px",
+              marginBottom: "10px",
+              background: "#f1f5f9",
+              borderRadius: "6px"
+            }}
+          >
+
+            <span
+              onClick={() => dispatch(toggleStudy(study.id))}
+              style={{
+                cursor: "pointer",
+                textDecoration: study.completed
+                  ? "line-through"
+                  : "none"
+              }}
+            >
+              {study.text}
+            </span>
+
+            <button
+              onClick={() => dispatch(deleteStudy(study.id))}
+              style={{
+                background: "#ef4444",
+                border: "none",
+                color: "white",
+                padding: "6px 12px",
+                borderRadius: "6px",
+                cursor: "pointer"
+              }}
+            >
+              Delete
+            </button>
+
+          </div>
+
+        ))
+
+      )}
+
+    </div>
+
+  );
+
+}
+
+export default StudyList;
+9️⃣ App.jsx
+import React from "react";
+import AddStudy from "./assets/5SmartStudyPlanner/components/AddStudy";
+import StudyList from "./assets/5SmartStudyPlanner/components/StudyList";
+
+function App() {
+
+  return (
+
+    <div style={{
+      minHeight:"100vh",
+      background:"linear-gradient(135deg,#4facfe,#00f2fe)",
+      padding:"40px"
+    }}>
+
+      <div style={{
+        maxWidth:"700px",
+        margin:"auto",
+        background:"white",
+        padding:"30px",
+        borderRadius:"15px",
+        boxShadow:"0 5px 20px rgba(0,0,0,0.2)"
+      }}>
+
+        <h1 style={{textAlign:"center"}}>
+          📚 Smart Study Planner
+        </h1>
+
+        <AddStudy/>
+        <StudyList/>
+
+      </div>
+
+    </div>
+
+  );
+
+}
+
+export default App;
+
+
+src
+ ├ actions
+ │   └ studyActions.js
+ ├ reducers
+ │   └ studyReducer.js
+ ├ middleware
+ │   └ logger.js
+ ├ components
+ │   ├ AddStudy.js
+ │   └ StudyList.js
+ ├ store.js
+ ├ App.js
+ └ main.jsx
