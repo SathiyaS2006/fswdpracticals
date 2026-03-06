@@ -1,3 +1,4 @@
+npm install react-router-dom
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 const employees = [
@@ -121,3 +122,4 @@ const styles = {
 
 
 export default EmployeeDashboard;
+
