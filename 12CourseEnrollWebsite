@@ -1,1 +1,145 @@
+backend
+npm init -y
+npm install express cors
+frontend
+npx create-react-app frontend
+npm install axios
 
+Step 1: Install Requirements
+
+Install the following in your system:
+
+Node.js
+
+VS Code
+
+Check installation in terminal:
+
+node -v
+npm -v
+Step 2: Create Project Folder
+
+Create a folder:
+
+CourseEnrollmentProject
+
+Inside create two folders:
+
+CourseEnrollmentProject
+│
+├── backend
+└── frontend
+Step 3: Create Backend Server
+
+Go inside backend folder.
+
+Open terminal and run:
+
+npm init -y
+
+Install required packages:
+
+npm install express cors
+
+Now create files:
+
+backend
+│
+├── server.js
+└── students.json
+Step 4: Add Backend Code
+
+Paste the server.js code inside:
+
+backend/server.js
+
+Create students.json
+
+backend/students.json
+
+Add:
+
+[]
+Step 5: Run Backend Server
+
+In backend terminal run:
+
+node server.js
+
+You will see:
+
+Server running on http://localhost:5000
+
+Leave this terminal running.
+
+Step 6: Create React Frontend
+
+Open a new terminal.
+
+Go to project folder:
+
+cd CourseEnrollmentProject
+
+Create React app:
+
+npx create-react-app frontend
+
+Move into frontend:
+
+cd frontend
+Step 7: Install Axios
+
+Axios is used to call API.
+
+Run:
+
+npm install axios
+Step 8: Add React Code
+
+Open:
+
+frontend/src/App.js
+
+Delete old code and paste the React App.js code.
+
+Save the file.
+
+Step 9: Run React Application
+
+In frontend folder run:
+
+npm start
+
+React will start at:
+
+http://localhost:3000
+Step 10: Test the Application
+
+Open browser
+
+Enter:
+
+Name
+Email
+Course
+
+Click Enroll
+
+You will see:
+
+Course Enrolled Successfully
+Step 11: Check Stored Data
+
+Open:
+
+backend/students.json
+
+You will see saved data like:
+
+[
+  {
+    "name": "Sathiya",
+    "email": "sathiya@gmail.com",
+    "course": "Web Development"
+  }
+]
