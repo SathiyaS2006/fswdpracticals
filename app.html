@@ -1,0 +1,92 @@
+<div class="container">
+
+<h2>Online Scholarship Application</h2>
+
+<form #jobForm="ngForm" (ngSubmit)="submitForm(jobForm)">
+
+<label>Full Name *</label>
+<input type="text" name="name" [(ngModel)]="student.name" required>
+
+<label>Email *</label>
+<input type="text" name="email" [(ngModel)]="student.email" required>
+
+<label>Phone Number *</label>
+<input type="text" name="phone" [(ngModel)]="student.phone" required>
+
+<h3>Education Details</h3>
+
+<label>Qualification *</label>
+<select name="qualification" [(ngModel)]="student.qualification" required>
+<option value="">Select</option>
+<option *ngFor="let q of qualifications" [value]="q">{{q}}</option>
+</select>
+
+<label>University *</label>
+<select name="university" [(ngModel)]="student.university" required>
+<option value="">Select</option>
+<option *ngFor="let u of universities" [value]="u">{{u}}</option>
+</select>
+
+<label>Year of Passing *</label>
+<select name="year" [(ngModel)]="student.year" required>
+<option value="">Select</option>
+<option *ngFor="let y of years" [value]="y">{{y}}</option>
+</select>
+
+<h3>Skills</h3>
+
+<div *ngFor="let skill of skillsList" class="checkbox-row">
+  <input
+    type="checkbox"
+    [value]="skill"
+    (change)="onSkillChange($event)"
+  >
+  <span>{{skill}}</span>
+</div>
+
+<h3>Scholarship Type</h3>
+
+<div class="radio-row">
+  <input
+    type="radio"
+    name="type"
+    value="Merit"
+    [(ngModel)]="student.type"
+  >
+  <span>Merit Based</span>
+</div>
+
+<div class="radio-row">
+  <input
+    type="radio"
+    name="type"
+    value="Need"
+    [(ngModel)]="student.type"
+  >
+  <span>Need Based</span>
+</div>
+
+
+<h3>Upload Documents</h3>
+
+<input type="file">
+
+<div class="agree">
+
+<input
+type="checkbox"
+name="agree"
+[(ngModel)]="student.agree"
+required>
+
+<label>I confirm all information is correct *</label>
+
+</div>
+
+<button type="submit" [disabled]="jobForm.invalid">
+Submit Application
+</button>
+
+</form>
+
+</div>
