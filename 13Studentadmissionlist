@@ -172,7 +172,7 @@ app.listen(5000, () => {
 node server.js(in backend)
 npm install
 npm run dev(in frontend)
-
+http://localhost:5000/users
 
 main.jsx
 import { StrictMode } from 'react'
