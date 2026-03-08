@@ -1,4 +1,4 @@
-backend
+mkdir backend
 npm init -y
 npm install express cors
 sever.js
