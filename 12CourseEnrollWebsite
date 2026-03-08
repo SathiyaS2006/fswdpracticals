@@ -2,9 +2,11 @@ backend
 npm init -y
 npm install express cors
 sever.js
+node server.js
 frontend
 npx create-react-app frontend
 npm install axios
+npm start
 
 Step 1: Install Requirements
 
