@@ -1,6 +1,7 @@
 frontend:
 create folder frontend-cmd- install react vite- open in vs code- terminal command prompt
 cd frontend
+cd myapp
 npm install axios
 paste app.jsx:
 import { useState, useEffect } from "react";
