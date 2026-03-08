@@ -2,7 +2,7 @@ mkdir backend
 cd backend
 npm init -y
 npm install express cors
-paste sever.js
+create and paste sever.js
 node server.js
 frontend
 npx create-react-app frontend
