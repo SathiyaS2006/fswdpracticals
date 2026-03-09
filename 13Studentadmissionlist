@@ -4,97 +4,149 @@ cd frontend
 cd myapp
 npm install axios
 paste app.jsx:
+
+
+app.jsx
 import { useState, useEffect } from "react";
 import axios from "axios";
-
 export default function App() {
-
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [students, setStudents] = useState([]);
-
-  const API = "http://localhost:5000";
-
+  const API = "https://student-admission-backend.onrender.com";
   const fetchStudents = async () => {
     const res = await axios.get(`${API}/users`);
     setStudents(res.data);
   };
-
   const addStudent = async () => {
-
-    if (!name || !phone) {
-      alert("Enter Name and Phone");
-      return;
-    }
-
-    await axios.post(`${API}/add-user`, {
-      name,
-      phone
-    });
-
+    if (!name || !phone) return;
+    await axios.post(`${API}/add-user`, { name, phone });
     setName("");
     setPhone("");
-
     fetchStudents();
   };
-
   const deleteStudent = async (id) => {
     await axios.delete(`${API}/delete-user/${id}`);
     fetchStudents();
   };
-
   useEffect(() => {
     fetchStudents();
   }, []);
-
   return (
-
     <div style={{ padding: 40 }}>
-
       <h2>🎓 Student Admission List</h2>
-
       <input
         placeholder="Student Name"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-
       <br /><br />
-
       <input
         placeholder="Phone Number"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
       />
-
       <br /><br />
-
       <button onClick={addStudent}>Add Student</button>
-
       <h3>Admission Records</h3>
-
       <ul>
-
         {students.map((s) => (
           <li key={s.id}>
             {s.name} — {s.phone}
-
             <button
               style={{ marginLeft: 10 }}
-              onClick={() => deleteStudent(s.id)}
-            >
+              onClick={() => deleteStudent(s.id)} >
               Remove
             </button>
-
           </li>
         ))}
-
       </ul>
-
     </div>
+  ); }
 
+
+main.jsx
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+
+
+
+server.js
+const express = require("express");
+const cors = require("cors");
+const sqlite3 = require("sqlite3").verbose();
+const app = express();
+// Middleware
+app.use(cors());
+app.use(express.json());
+// Connect SQLite Database
+const db = new sqlite3.Database("./database.db", (err) => {
+  if (err) {
+    console.log(err.message);
+  } else {
+    console.log("Connected to SQLite database");
+  }
+});
+// Create Students Table
+db.run(`
+  CREATE TABLE IF NOT EXISTS students (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    phone TEXT
+  )
+`);
+// ➕ Add Student
+app.post("/add-user", (req, res) => {
+  const { name, phone } = req.body;
+if (!name || !phone) {
+    return res.status(400).json({ error: "Name and phone required" });
+  }
+  db.run(
+    "INSERT INTO students(name, phone) VALUES(?, ?)",
+    [name, phone],
+    function (err) {
+      if (err) {
+        return res.status(500).json(err);
+      }
+      res.json({
+        message: "Student added successfully",
+        id: this.lastID,
+      });
+    }
   );
-}
+});
+// 📋 Get All Students
+app.get("/users", (req, res) => {
+  db.all("SELECT * FROM students", [], (err, rows) => {
+    if (err) {
+      return res.status(500).json(err);
+    }
+    res.json(rows);
+  });
+});
+// ❌ Delete Student
+app.delete("/delete-user/:id", (req, res) => {
+  const id = req.params.id;
+  db.run("DELETE FROM students WHERE id = ?", [id], function (err) {
+    if (err) {
+      return res.status(500).json(err);
+    }
+    res.json({ message: "Student removed successfully" });
+  });
+});
+// Start Server
+app.listen(5000, () => {
+  console.log("Backend running on http://localhost:5000");
+});
+
 Backend: new cp
 mkdir backend
 cd backend
