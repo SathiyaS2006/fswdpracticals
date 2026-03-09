@@ -42,6 +42,7 @@ app.listen(5000, () => {
 node server.js
 frontend
 npx create-react-app frontend
+cd frontend
 npm install axios
 
 app.js:
