@@ -305,3 +305,307 @@ h1{
 Run Frontend:
 
 npm start
+
+
+Sathiya 👍 I’ll give **full steps from start → till website live in Render** for your **React + Node Food Delivery Website**. Follow exactly.
+
+---
+
+# 🚀 STEP 1 — Upload Project to GitHub
+
+Open **GitHub**
+
+1️⃣ Click **New Repository**
+
+Name:
+
+```
+food-delivery-website
+```
+
+2️⃣ Click **Create repository**
+
+3️⃣ Click:
+
+```
+Add file → Upload files
+```
+
+4️⃣ Upload folders:
+
+```
+backend
+frontend
+```
+
+⚠️ Do NOT upload:
+
+```
+node_modules
+```
+
+Now GitHub repo structure should be:
+
+```
+food-delivery-website
+   backend
+      server.js
+      package.json
+   frontend
+      public
+      src
+      package.json
+```
+
+---
+
+# 🚀 STEP 2 — Deploy Backend in Render
+
+Open **Render**
+
+Click:
+
+```
+New +
+```
+
+Select:
+
+```
+Web Service
+```
+
+Connect your GitHub repo.
+
+Select:
+
+```
+food-delivery-website
+```
+
+Fill settings:
+
+### Name
+
+```
+food-delivery-backend
+```
+
+### Language
+
+```
+Node
+```
+
+### Branch
+
+```
+main
+```
+
+### Root Directory
+
+```
+backend
+```
+
+### Build Command
+
+```
+npm install
+```
+
+### Start Command
+
+```
+node server.js
+```
+
+### Instance Type
+
+```
+Free
+```
+
+Click:
+
+```
+Deploy Web Service
+```
+
+---
+
+# 🚀 STEP 3 — Wait for Backend Deploy
+
+After build finish, Render will give backend URL like:
+
+```
+https://food-delivery-backend.onrender.com
+```
+
+Save this URL.
+
+---
+
+# 🚀 STEP 4 — Change API URL in React
+
+Open your React code.
+
+In **App.js or API fetch code**, change:
+
+❌ Old:
+
+```javascript
+http://localhost:5000
+```
+
+✅ New:
+
+```javascript
+https://food-delivery-backend.onrender.com
+```
+
+Commit change to GitHub.
+
+---
+
+# 🚀 STEP 5 — Deploy Frontend
+
+In Render dashboard click:
+
+```
+New +
+```
+
+Select:
+
+```
+Static Site
+```
+
+Connect GitHub repo.
+
+Select:
+
+```
+food-delivery-website
+```
+
+Fill settings:
+
+### Name
+
+```
+food-delivery-frontend
+```
+
+### Branch
+
+```
+main
+```
+
+### Root Directory
+
+```
+frontend
+```
+
+### Build Command
+
+```
+npm install && npm run build
+```
+
+### Publish Directory
+
+```
+build
+```
+
+Click:
+
+```
+Deploy Static Site
+```
+
+---
+
+# 🚀 STEP 6 — Wait for Build
+
+Render will run:
+
+```
+npm install
+npm run build
+```
+
+This creates:
+
+```
+frontend/build
+```
+
+Then website will deploy.
+
+---
+
+# 🌐 FINAL WEBSITE
+
+Render will give link like:
+
+```
+https://food-delivery-frontend.onrender.com
+```
+
+Open it → your **Food Delivery Website will work online**.
+
+---
+
+# ⚠️ 2 Important Checks
+
+### 1️⃣ In `server.js`
+
+Make sure this exists:
+
+```javascript
+const PORT = process.env.PORT || 5000;
+```
+
+---
+
+### 2️⃣ In React `package.json`
+
+Add:
+
+```json
+"homepage": "."
+```
+
+Example:
+
+```json
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "homepage": "."
+}
+```
+
+---
+
+# ✅ Final Result
+
+You will have:
+
+```
+Backend API → Render Web Service
+Frontend UI → Render Static Site
+```
+
+Your project becomes **live website 🌍**
+
+---
+
+✅ Sathiya, if you want I can also show **one easiest trick to deploy both frontend + backend in Render using only ONE service (much easier)**.
+
